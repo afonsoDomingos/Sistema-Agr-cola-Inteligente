@@ -1,43 +1,43 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-MZ">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Sistema Agrícola Inteligente — Protótipo</title>
-  <!-- Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
-    :root{
-      --leaf-green:#2e7d32; --leaf-green-2:#66bb6a; --maize-yellow:#f9a825; --tomato-red:#e53935;
-      --soil-brown:#6d4c41; --sky-blue:#29b6f6; --water-blue:#0288d1; --sand:#f1ede3; --ink:#263238;
-      --ok:#2e7d32; --warn:#f9a825; --alert:#d32f2f;
+    :root {
+      --leaf-green: #2e7d32; --leaf-green-2: #66bb6a; --maize-yellow: #f9a825; --tomato-red: #e53935;
+      --soil-brown: #6d4c41; --sky-blue: #29b6f6; --water-blue: #0288d1; --sand: #f1ede3; --ink: #263238;
+      --ok: #2e7d32; --warn: #f9a825; --alert: #d32f2f;
     }
-    *{ box-sizing:border-box; }
-    body{ margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial; color:var(--ink); background:var(--sand); }
-    header{ padding:16px 20px; background:linear-gradient(90deg,var(--leaf-green),var(--maize-yellow)); color:#fff; }
-    header h1{ margin:0; font-size:22px; }
-    header small{ opacity:.9; }
-    header .author { display:block; font-size:12px; margin-top:4px; }
-    .container{ max-width:1200px; margin:0 auto; padding:18px; }
-    .controls{ display:grid; grid-template-columns: repeat(5, minmax(160px,1fr)); gap:12px; margin-bottom:16px; background:#fff; padding:12px; border-radius:12px; border:1px solid #e5e2da; box-shadow:0 1px 3px rgba(0,0,0,.05); }
-    .controls label{ font-size:12px; color:#555; display:block; margin-bottom:6px; }
-    .controls select, .controls input{ width:100%; padding:10px 12px; border-radius:10px; border:1px solid #d8d4cb; background:#fff; }
-    .controls .badge{ display:inline-block; padding:6px 10px; border-radius:999px; background:var(--leaf-green-2); color:#fff; font-size:12px; margin-top:8px; }
-    .grid{ display:grid; grid-template-columns: 1.1fr 1fr; gap:16px; }
-    .card{ background:#fff; border:1px solid #e5e2da; border-radius:14px; padding:14px; box-shadow:0 1px 3px rgba(0,0,0,.05); }
-    .card h3{ margin:0 0 10px 0; font-size:16px; color:var(--leaf-green); }
-    .kpis{ display:grid; grid-template-columns: repeat(4,1fr); gap:12px; margin:14px 0; }
-    .kpi{ background:#fff; border:1px solid #e5e2da; border-radius:12px; padding:12px; }
-    .kpi .label{ font-size:12px; color:#666; }
-    .kpi .value{ font-size:20px; font-weight:700; margin-top:6px; }
-    .kpi .status{ margin-top:8px; font-size:12px; padding:4px 8px; border-radius:8px; display:inline-block; }
-    .status.ok{ background:#e8f5e9; color:var(--ok); border:1px solid #c8e6c9; }
-    .status.warn{ background:#fff8e1; color:#b28704; border:1px solid #ffecb3; }
-    .status.alert{ background:#ffebee; color:var(--alert); border:1px solid #ffcdd2; }
-    .alerts{ list-style:none; padding:0; margin:0; display:grid; gap:8px; }
-    .alert-item{ padding:10px 12px; border-radius:10px; border:1px dashed #e0ded6; background:#faf9f6; font-size:13px; }
-    .footer-note{ margin-top:18px; font-size:12px; color:#666; }
-    @media (max-width: 1024px){ .grid{ grid-template-columns:1fr; } .kpis{ grid-template-columns: repeat(2,1fr); } .controls{ grid-template-columns: repeat(2, minmax(160px,1fr)); } }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, "Helvetica Neue", Arial; color: var(--ink); background: var(--sand); }
+    header { padding: 16px 20px; background: linear-gradient(90deg, var(--leaf-green), var(--maize-yellow)); color: #fff; }
+    header h1 { margin: 0; font-size: 22px; }
+    header small { opacity: .9; }
+    header .author { display: block; font-size: 12px; margin-top: 4px; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 18px; }
+    .controls { display: grid; grid-template-columns: repeat(5, minmax(160px, 1fr)); gap: 12px; margin-bottom: 16px; background: #fff; padding: 12px; border-radius: 12px; border: 1px solid #e5e2da; box-shadow: 0 1px 3px rgba(0,0,0,.05); }
+    .controls label { font-size: 12px; color: #555; display: block; margin-bottom: 6px; }
+    .controls select, .controls input { width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid #d8d4cb; background: #fff; }
+    .controls .badge { display: inline-block; padding: 6px 10px; border-radius: 999px; background: var(--leaf-green-2); color: #fff; font-size: 12px; margin-top: 8px; }
+    .controls .loading::after { content: ' ⏳'; }
+    .grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 16px; }
+    .card { background: #fff; border: 1px solid #e5e2da; border-radius: 14px; padding: 14px; box-shadow: 0 1px 3px rgba(0,0,0,.05); }
+    .card h3 { margin: 0 0 10px 0; font-size: 16px; color: var(--leaf-green); }
+    .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 14px 0; }
+    .kpi { background: #fff; border: 1px solid #e5e2da; border-radius: 12px; padding: 12px; }
+    .kpi .label { font-size: 12px; color: #666; }
+    .kpi .value { font-size: 20px; font-weight: 700; margin-top: 6px; }
+    .kpi .status { margin-top: 8px; font-size: 12px; padding: 4px 8px; border-radius: 8px; display: inline-block; }
+    .status.ok { background: #e8f5e9; color: var(--ok); border: 1px solid #c8e6c9; }
+    .status.warn { background: #fff8e1; color: #b28704; border: 1px solid #ffecb3; }
+    .status.alert { background: #ffebee; color: var(--alert); border: 1px solid #ffcdd2; }
+    .alerts { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+    .alert-item { padding: 10px 12px; border-radius: 10px; border: 1px dashed #e0ded6; background: #faf9f6; font-size: 13px; }
+    .footer-note { margin-top: 18px; font-size: 12px; color: #666; }
+    @media (max-width: 1024px) { .grid { grid-template-columns: 1fr; } .kpis { grid-template-columns: repeat(2, 1fr); } .controls { grid-template-columns: repeat(2, minmax(160px, 1fr)); } }
   </style>
 </head>
 <body>
@@ -51,7 +51,7 @@
     <section class="controls">
       <div>
         <label for="location">Localização</label>
-        <select id="location">
+        <select id="location" aria-label="Selecionar localização">
           <option value="buane">Buane — Maputo</option>
           <option value="nhamatanda">Nhamatanda — Sofala</option>
           <option value="gondola">Gondola — Manica</option>
@@ -61,7 +61,7 @@
       </div>
       <div>
         <label for="crop">Cultura</label>
-        <select id="crop">
+        <select id="crop" aria-label="Selecionar cultura">
           <option value="tomate">Tomate</option>
           <option value="milho">Milho</option>
           <option value="arroz">Arroz</option>
@@ -71,7 +71,7 @@
       </div>
       <div>
         <label for="rainToggle">Previsão de chuva</label>
-        <select id="rainToggle">
+        <select id="rainToggle" aria-label="Selecionar modo de previsão de chuva">
           <option value="api" selected>API (Open‑Meteo)</option>
           <option value="sim">Forçar chuva iminente</option>
           <option value="nao">Forçar sem chuva</option>
@@ -80,7 +80,7 @@
       </div>
       <div>
         <label for="updateRate">Taxa de actualização</label>
-        <select id="updateRate">
+        <select id="updateRate" aria-label="Selecionar taxa de atualização">
           <option value="1000">1s (rápido)</option>
           <option value="2000" selected>2s</option>
           <option value="5000">5s</option>
@@ -89,7 +89,7 @@
       </div>
       <div>
         <label for="dataSource">Fonte da humidade</label>
-        <select id="dataSource">
+        <select id="dataSource" aria-label="Selecionar fonte de humidade">
           <option value="api" selected>API (Open‑Meteo solo 0–7cm)</option>
           <option value="sim">Simulada</option>
         </select>
@@ -121,31 +121,31 @@
 
     <section class="card">
       <h3>Resumo automático</h3>
-      <div id="summary">Aguarde…</div>
+      <div id="summary" aria-live="polite">Aguarde…</div>
     </section>
 
     <section class="grid" style="margin-top:16px;">
       <div class="card">
         <h3>Tendência — Humidade do Solo (%)</h3>
-        <canvas id="chartMoisture" height="140"></canvas>
+        <canvas id="chartMoisture" height="140" aria-label="Gráfico de humidade do solo"></canvas>
       </div>
       <div class="card">
         <h3>Probabilidade de Chuva (0–100%)</h3>
-        <canvas id="chartRain" height="140"></canvas>
+        <canvas id="chartRain" height="140" aria-label="Gráfico de probabilidade de chuva"></canvas>
       </div>
       <div class="card">
         <h3>Risco de Pragas/Doenças</h3>
-        <canvas id="chartPest" height="140"></canvas>
+        <canvas id="chartPest" height="140" aria-label="Gráfico de risco de pragas e doenças"></canvas>
       </div>
       <div class="card">
         <h3>Nutrientes (N • P • K)</h3>
-        <canvas id="chartNPK" height="140"></canvas>
+        <canvas id="chartNPK" height="140" aria-label="Gráfico de nutrientes NPK"></canvas>
       </div>
     </section>
 
     <section class="card" style="margin-top:16px;">
       <h3>Alertas e Ações</h3>
-      <ul id="alerts" class="alerts"></ul>
+      <ul id="alerts" class="alerts" aria-live="polite"></ul>
       <div class="footer-note">Fonte meteorológica: <strong>Open‑Meteo</strong> (sem chave, com CORS). Solo 0–7cm (volumétrica) convertido para %. Ajuste com sensor local quando disponível.</div>
     </section>
   </div>
@@ -154,40 +154,41 @@
     // =============================
     // UTILITÁRIOS
     // =============================
-    const clamp = (v,min,max)=> Math.max(min, Math.min(max, v));
-    const rnd = (a,b)=> a + Math.random()*(b-a);
+    const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+    const rnd = (a, b) => a + Math.random() * (b - a);
+    const smoothValue = (prev, next, factor = 0.4) => prev * (1 - factor) + next * factor;
 
     // Coordenadas aproximadas por local (lat, lon)
     const coords = {
-      'buane':       { lat:-26.05, lon:32.38 }, // Buane/Boane — Maputo
-      'nhamatanda':  { lat:-19.43, lon:34.27 },
-      'gondola':     { lat:-19.19, lon:33.64 },
-      'cabo-delgado':{ lat:-12.97, lon:40.52 }, // Pemba
-      'mucuba':      { lat:-16.84, lon:36.99 }, // Mocuba
+      'buane': { lat: -26.05, lon: 32.38 },
+      'nhamatanda': { lat: -19.43, lon: 34.27 },
+      'gondola': { lat: -19.19, lon: 33.64 },
+      'cabo-delgado': { lat: -12.97, lon: 40.52 },
+      'mucuba': { lat: -16.84, lon: 36.99 },
     };
 
-    // Perfis climáticos base (apenas para fallback/simulação)
+    // Perfis climáticos base (para simulação)
     const climateProfiles = {
-      'buane':        { rainBase: 0.35, tempBase: 0.70 },
-      'nhamatanda':   { rainBase: 0.45, tempBase: 0.68 },
-      'gondola':      { rainBase: 0.50, tempBase: 0.64 },
+      'buane': { rainBase: 0.35, tempBase: 0.70 },
+      'nhamatanda': { rainBase: 0.45, tempBase: 0.68 },
+      'gondola': { rainBase: 0.50, tempBase: 0.64 },
       'cabo-delgado': { rainBase: 0.55, tempBase: 0.72 },
-      'mucuba':       { rainBase: 0.60, tempBase: 0.66 },
+      'mucuba': { rainBase: 0.60, tempBase: 0.66 },
     };
 
     // Limiares de humidade por cultura (%)
-    const moistureThresholds = { tomate:38, milho:32, arroz:45, feijao:30, trigo:28 };
+    const moistureThresholds = { tomate: 38, milho: 32, arroz: 45, feijao: 30, trigo: 28 };
 
     // Janelas de sementeira por localidade (meses 1..12)
     const plantingWindowsByLoc = {
-      'buane': { tomate:[2,3,4,9,10], milho:[11,12,1,2], arroz:[11,12,1,2], feijao:[11,12,1,2,3], trigo:[6] },
-      'nhamatanda': { tomate:[3,4,8,9,10], milho:[11,12,1,2], arroz:[12,1,2,3], feijao:[11,12,1,2,3], trigo:[5,6] },
-      'gondola': { tomate:[2,3,4,8,9], milho:[11,12,1,2], arroz:[11,12,1,2], feijao:[11,12,1,2,3], trigo:[5,6,7] },
-      'cabo-delgado': { tomate:[3,4,11], milho:[12,1,2], arroz:[12,1,2,3], feijao:[12,1,2,3], trigo:[6] },
-      'mucuba': { tomate:[2,3,4,9], milho:[11,12,1,2], arroz:[12,1,2], feijao:[11,12,1,2,3], trigo:[5,6] }
+      'buane': { tomate: [2,3,4,9,10], milho: [11,12,1,2], arroz: [11,12,1,2], feijao: [11,12,1,2,3], trigo: [6] },
+      'nhamatanda': { tomate: [3,4,8,9,10], milho: [11,12,1,2], arroz: [12,1,2,3], feijao: [11,12,1,2,3], trigo: [5,6] },
+      'gondola': { tomate: [2,3,4,8,9], milho: [11,12,1,2], arroz: [11,12,1,2], feijao: [11,12,1,2,3], trigo: [5,6,7] },
+      'cabo-delgado': { tomate: [3,4,11], milho: [12,1,2], arroz: [12,1,2,3], feijao: [12,1,2,3], trigo: [6] },
+      'mucuba': { tomate: [2,3,4,9], milho: [11,12,1,2], arroz: [12,1,2], feijao: [11,12,1,2,3], trigo: [5,6] }
     };
 
-    function monthName(m){ return ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'][m-1] || m; }
+    function monthName(m) { return ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'][m - 1] || m; }
 
     // =============================
     // CHARTS
@@ -197,16 +198,82 @@
     const ctxPest = document.getElementById('chartPest');
     const ctxNPK = document.getElementById('chartNPK');
 
-    const baseLabels = Array.from({length:30}, (_,i)=> t-${30-i}s);
-    const moistureData = Array.from({length:30}, ()=> rnd(30,60));
-    const rainData = Array.from({length:30}, ()=> rnd(10,80));
-    const pestData = Array.from({length:30}, ()=> rnd(0.2,0.7));
+    const baseLabels = Array.from({ length: 30 }, (_, i) => `t-${30 - i}s`);
+    const moistureData = Array.from({ length: 30 }, () => rnd(30, 60));
+    const rainData = Array.from({ length: 30 }, () => rnd(10, 80));
+    const pestData = Array.from({ length: 30 }, () => rnd(0.2, 0.7));
+    const nutrients = { N: rnd(55, 85), P: rnd(45, 75), K: rnd(50, 80) };
 
-    const moistureChart = new Chart(ctxMoisture,{ type:'line', data:{ labels:baseLabels, datasets:[{ label:'Humidade do Solo (%)', data:moistureData, tension:.25, borderWidth:2, pointRadius:0 }]}, options:{ responsive:true, maintainAspectRatio:false, scales:{ y:{ min:0, max:100 }}}});
-    const rainChart     = new Chart(ctxRain,    { type:'bar',  data:{ labels:baseLabels, datasets:[{ label:'Prob. de Chuva (%)', data:rainData, borderWidth:1 }]}, options:{ responsive:true, maintainAspectRatio:false, scales:{ y:{ min:0, max:100 }}}});
-    const pestChart     = new Chart(ctxPest,    { type:'line', data:{ labels:baseLabels, datasets:[{ label:'Risco (0–1)', data:pestData, tension:.25, borderWidth:2, pointRadius:0 }]}, options:{ responsive:true, maintainAspectRatio:false, scales:{ y:{ min:0, max:1 }}}});
-    const nutrients = { N:rnd(55,85), P:rnd(45,75), K:rnd(50,80) };
-    const npkChart      = new Chart(ctxNPK,     { type:'bar',  data:{ labels:['N','P','K'], datasets:[{ label:'Nutrientes (%)', data:[nutrients.N,nutrients.P,nutrients.K] }]}, options:{ responsive:true, maintainAspectRatio:false, scales:{ y:{ min:0, max:100 }}}});
+    const chartOptions = {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { tooltip: { enabled: true } },
+      scales: { y: { beginAtZero: true } }
+    };
+
+    const moistureChart = new Chart(ctxMoisture, {
+      type: 'line',
+      data: {
+        labels: baseLabels,
+        datasets: [{
+          label: 'Humidade do Solo (%)',
+          data: moistureData,
+          tension: 0.25,
+          borderWidth: 2,
+          pointRadius: 0,
+          borderColor: 'var(--water-blue)',
+          backgroundColor: 'var(--water-blue)'
+        }]
+      },
+      options: { ...chartOptions, scales: { y: { min: 0, max: 100 } } }
+    });
+
+    const rainChart = new Chart(ctxRain, {
+      type: 'bar',
+      data: {
+        labels: baseLabels,
+        datasets: [{
+          label: 'Prob. de Chuva (%)',
+          data: rainData,
+          borderWidth: 1,
+          backgroundColor: 'var(--sky-blue)',
+          borderColor: 'var(--sky-blue)'
+        }]
+      },
+      options: { ...chartOptions, scales: { y: { min: 0, max: 100 } } }
+    });
+
+    const pestChart = new Chart(ctxPest, {
+      type: 'line',
+      data: {
+        labels: baseLabels,
+        datasets: [{
+          label: 'Risco (0–1)',
+          data: pestData,
+          tension: 0.25,
+          borderWidth: 2,
+          pointRadius: 0,
+          borderColor: 'var(--tomato-red)',
+          backgroundColor: 'var(--tomato-red)'
+        }]
+      },
+      options: { ...chartOptions, scales: { y: { min: 0, max: 1 } } }
+    });
+
+    const npkChart = new Chart(ctxNPK, {
+      type: 'bar',
+      data: {
+        labels: ['N', 'P', 'K'],
+        datasets: [{
+          label: 'Nutrientes (%)',
+          data: [nutrients.N, nutrients.P, nutrients.K],
+          backgroundColor: ['var(--leaf-green)', 'var(--maize-yellow)', 'var(--soil-brown)'],
+          borderColor: ['var(--leaf-green)', 'var(--maize-yellow)', 'var(--soil-brown)'],
+          borderWidth: 1
+        }]
+      },
+      options: { ...chartOptions, scales: { y: { min: 0, max: 100 } } }
+    });
 
     // =============================
     // UI ELEMENTS
@@ -216,7 +283,6 @@
     const $rainToggle = document.getElementById('rainToggle');
     const $updateRate = document.getElementById('updateRate');
     const $dataSource = document.getElementById('dataSource');
-
     const $kpiMoist = document.getElementById('kpi-moisture');
     const $kpiMoistStatus = document.getElementById('kpi-moisture-status');
     const $kpiRain = document.getElementById('kpi-rain');
@@ -229,49 +295,75 @@
     const $alerts = document.getElementById('alerts');
     const $pumpBadge = document.getElementById('pumpStateBadge');
 
-    function setBadge(text, level='ok'){ $pumpBadge.textContent = text; $pumpBadge.style.background = level==='ok'? 'var(--leaf-green-2)' : level==='warn'? 'var(--maize-yellow)' : 'var(--tomato-red)'; }
-    function setStatus(el, text, level){ el.className = status ${level}; el.textContent = text; }
-    function addAlert(msg, level='warn'){ const li=document.createElement('li'); li.className='alert-item'; li.style.borderColor = level==='alert'? '#e57373' : level==='warn'? '#f9a825' : '#66bb6a'; li.textContent = msg; $alerts.prepend(li); while($alerts.children.length>6){ $alerts.removeChild($alerts.lastChild);} }
+    function setBadge(text, level = 'ok') {
+      $pumpBadge.textContent = text;
+      $pumpBadge.style.background = level === 'ok' ? 'var(--leaf-green-2)' : level === 'warn' ? 'var(--maize-yellow)' : 'var(--tomato-red)';
+    }
+
+    function setStatus(el, text, level) {
+      el.className = `status ${level}`;
+      el.textContent = text;
+    }
+
+    function addAlert(msg, level = 'warn') {
+      const li = document.createElement('li');
+      li.className = 'alert-item';
+      li.style.borderColor = level === 'alert' ? '#e57373' : level === 'warn' ? '#f9a825' : '#66bb6a';
+      li.textContent = msg;
+      $alerts.prepend(li);
+      while ($alerts.children.length > 6) $alerts.removeChild($alerts.lastChild);
+    }
 
     // =============================
     // API OPEN-METEO
     // =============================
     let apiState = { rainProb: null, soilPercent: null, lastFetch: null };
+    const maxRetries = 3;
+    const retryDelay = 5000;
 
-    async function fetchFromOpenMeteo(){
+    async function fetchFromOpenMeteo(attempt = 1) {
       const { lat, lon } = coords[$loc.value] || coords['buane'];
-      const url = https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=precipitation_probability,precipitation,temperature_2m,soil_moisture_0_to_7cm&forecast_days=1&timezone=auto;
-      try{
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=precipitation_probability,precipitation,temperature_2m,soil_moisture_0_to_7cm&forecast_days=1&timezone=auto`;
+      $pumpBadge.classList.add('loading');
+      try {
         const res = await fetch(url);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
-        const h = data.hourly || {};
+        if (!data.hourly) throw new Error('Dados horários ausentes');
+        const h = data.hourly;
         const idxNow = Math.max(0, nearestHourIndex(h.time));
-        // Probabilidade média das próximas 6h (ou as que existirem)
         let probs = [];
-        for(let i=idxNow; i<Math.min(idxNow+6, (h.precipitation_probability||[]).length); i++){
+        for (let i = idxNow; i < Math.min(idxNow + 6, (h.precipitation_probability || []).length); i++) {
           const p = h.precipitation_probability?.[i];
-          if(typeof p === 'number') probs.push(p);
+          if (typeof p === 'number') probs.push(p);
         }
-        const rainProb = probs.length? (probs.reduce((a,b)=>a+b,0)/probs.length) : null;
-        // Solo: converter m3/m3 para % (0..1 -> 0..100). Alguns modelos dão >0.5 em solos saturados; limitar a 0..0.5≈50%.
+        const rainProb = probs.length ? (probs.reduce((a, b) => a + b, 0) / probs.length) : null;
         const sm = h.soil_moisture_0_to_7cm?.[idxNow];
-        const soilPercent = (typeof sm === 'number') ? clamp(sm*100, 0, 60) : null;
+        const soilPercent = (typeof sm === 'number') ? clamp(sm * 100, 0, 60) : null;
         apiState = { rainProb, soilPercent, lastFetch: new Date() };
-      }catch(e){
-        addAlert('Falha ao consultar Open‑Meteo; a usar simulação até restabelecer.', 'alert');
-        apiState = { rainProb:null, soilPercent:null, lastFetch:null };
+        localStorage.setItem('apiState', JSON.stringify(apiState));
+        $pumpBadge.classList.remove('loading');
+      } catch (e) {
+        if (attempt <= maxRetries) {
+          addAlert(`Falha na API (tentativa ${attempt}/${maxRetries}); retry em ${retryDelay/1000}s`, 'warn');
+          setTimeout(() => fetchFromOpenMeteo(attempt + 1), retryDelay * attempt);
+        } else {
+          addAlert('Falha ao consultar Open‑Meteo; a usar simulação.', 'alert');
+          apiState = JSON.parse(localStorage.getItem('apiState')) || { rainProb: null, soilPercent: null, lastFetch: null };
+          $pumpBadge.classList.remove('loading');
+        }
       }
     }
 
-    function nearestHourIndex(times){
-      if(!times || !times.length) return 0;
+    function nearestHourIndex(times) {
+      if (!times || !times.length) return 0;
       const now = new Date();
-      const target = Date.UTC(now.getUTCFullYear(),now.getUTCMonth(),now.getUTCDate(),now.getUTCHours());
+      const target = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours());
       let bestIdx = 0, bestDiff = Infinity;
-      for(let i=0;i<times.length;i++){
+      for (let i = 0; i < times.length; i++) {
         const t = Date.parse(times[i]);
         const d = Math.abs(t - target);
-        if(d<bestDiff){ bestDiff=d; bestIdx=i; }
+        if (d < bestDiff) { bestDiff = d; bestIdx = i; }
       }
       return bestIdx;
     }
@@ -280,115 +372,158 @@
     // LÓGICA
     // =============================
     let pumpsOn = false;
-    let lastMoisture = moistureData[moistureData.length-1];
-    let lastRainProb = rainData[rainData.length-1];
+    let lastMoisture = moistureData[moistureData.length - 1];
+    let lastRainProb = rainData[rainData.length - 1];
     let timer = null, apiTimer = null;
 
-    function currentPlantingAdvice(){
-      const crop = $crop.value; const loc=$loc.value; const m = new Date().getMonth()+1;
-      const win=(plantingWindowsByLoc[loc] && plantingWindowsByLoc[loc][crop])||[]; const inWindow=win.includes(m);
+    function currentPlantingAdvice() {
+      const crop = $crop.value;
+      const loc = $loc.value;
+      const m = new Date().getMonth() + 1;
+      const win = (plantingWindowsByLoc[loc] && plantingWindowsByLoc[loc][crop]) || [];
+      const inWindow = win.includes(m);
       const meses = win.map(monthName).join(', ') || '—';
-      return { inWindow, text: inWindow? 'Dentro da janela recomendada de sementeira.' : 'Fora da janela típica; avaliar condições locais.', janela:meses };
+      return { inWindow, text: inWindow ? 'Dentro da janela recomendada de sementeira.' : 'Fora da janela típica; avaliar condições locais.', janela: meses };
     }
 
-    function computeRainProb(){
+    function computeRainProb() {
       const mode = $rainToggle.value;
-      if(mode==='sim') return 85 + rnd(-5,5);
-      if(mode==='nao') return 10 + rnd(-5,5);
-      if(mode==='api' && apiState.rainProb!=null) return apiState.rainProb + rnd(-3,3);
-      // fallback simulado
-      const profile = climateProfiles[$loc.value] || { rainBase:.45 };
-      const hour = new Date().getHours(); const diurnal = Math.sin((hour/24)*2*Math.PI) * 10; // -10..+10
-      return clamp(profile.rainBase*100 + diurnal + rnd(-15,15), 0, 100);
+      if (mode === 'sim') return smoothValue(lastRainProb, 85 + rnd(-5, 5));
+      if (mode === 'nao') return smoothValue(lastRainProb, 10 + rnd(-5, 5));
+      if (mode === 'api' && apiState.rainProb != null) return smoothValue(lastRainProb, apiState.rainProb + rnd(-3, 3));
+      const profile = climateProfiles[$loc.value] || { rainBase: 0.45 };
+      const hour = new Date().getHours();
+      const diurnal = Math.sin((hour / 24) * 2 * Math.PI) * 10;
+      return clamp(smoothValue(lastRainProb, profile.rainBase * 100 + diurnal + rnd(-15, 15)), 0, 100);
     }
 
-    function computeSoilMoisture(prev){
-      if($dataSource.value==='api' && apiState.soilPercent!=null){
-        // Dar suavidade e usar leitura API como destino
-        return clamp(prev*0.6 + apiState.soilPercent*0.4, 5, 95);
+    function computeSoilMoisture(prev) {
+      if ($dataSource.value === 'api' && apiState.soilPercent != null) {
+        return clamp(smoothValue(prev, apiState.soilPercent), 5, 95);
       }
-      const evap = rnd(0.1, 0.7); // %/tick
-      const rainGain = lastRainProb>60 ? rnd(0.5, 2.0) : 0; // %/tick
-      const irrigationGain = pumpsOn ? rnd(0.8, 2.5) : 0; // %/tick
+      const evap = rnd(0.1, 0.7);
+      const rainGain = lastRainProb > 60 ? rnd(0.5, 2.0) : 0;
+      const irrigationGain = pumpsOn ? rnd(0.8, 2.5) : 0;
       let next = prev - evap + rainGain + irrigationGain;
-      return clamp(next, 5, 95);
+      return clamp(smoothValue(prev, next), 5, 95);
     }
 
-    function irrigationLogic(rainProb, moist, crop){
+    function irrigationLogic(rainProb, moist, crop) {
       const th = moistureThresholds[crop] || 35;
-      if(rainProb >= 60){ pumpsOn = false; setBadge('Bombas: DESLIGADAS (chuva provável)','ok'); return 'chuva'; }
-      if(moist < th){ pumpsOn = true; setBadge('Bombas: LIGADAS (solo seco)','warn'); return 'regar'; }
-      pumpsOn = false; setBadge('Bombas: DESLIGADAS (humidade adequada)','ok'); return 'manter';
+      if (rainProb >= 60) {
+        pumpsOn = false;
+        setBadge('Bombas: DESLIGADAS (chuva provável)', 'ok');
+        return 'chuva';
+      }
+      if (moist < th) {
+        pumpsOn = true;
+        setBadge('Bombas: LIGADAS (solo seco)', 'warn');
+        return 'regar';
+      }
+      pumpsOn = false;
+      setBadge('Bombas: DESLIGADAS (humidade adequada)', 'ok');
+      return 'manter';
     }
 
-    function fertilizerAdvice(){
-      nutrients.N = clamp(nutrients.N - rnd(0.1,0.5) + (pumpsOn?0.05:0), 20, 100);
-      nutrients.P = clamp(nutrients.P - rnd(0.05,0.3), 20, 100);
-      nutrients.K = clamp(nutrients.K - rnd(0.08,0.4), 20, 100);
+    function fertilizerAdvice() {
+      nutrients.N = clamp(nutrients.N - rnd(0.1, 0.5) + (pumpsOn ? 0.05 : 0), 20, 100);
+      nutrients.P = clamp(nutrients.P - rnd(0.05, 0.3), 20, 100);
+      nutrients.K = clamp(nutrients.K - rnd(0.08, 0.4), 20, 100);
       const needsN = nutrients.N < 45, needsP = nutrients.P < 40, needsK = nutrients.K < 42;
       let msg = [];
-      if(needsN) msg.push('Aplicar fonte nitrogenada (ex.: ureia).');
-      if(needsP) msg.push('Aplicar fosfatado (ex.: MAP/TSP).');
-      if(needsK) msg.push('Aplicar potássio (ex.: KCl).');
-      return { needs: needsN||needsP||needsK, msg: msg.join(' ') };
+      if (needsN) msg.push('Aplicar fonte nitrogenada (ex.: ureia).');
+      if (needsP) msg.push('Aplicar fosfatado (ex.: MAP/TSP).');
+      if (needsK) msg.push('Aplicar potássio (ex.: KCl).');
+      return { needs: needsN || needsP || needsK, msg: msg.join(' ') };
     }
 
-    function tick(){
-      lastRainProb = clamp(computeRainProb(),0,100);
+    function tick() {
+      lastRainProb = clamp(computeRainProb(), 0, 100);
       lastMoisture = computeSoilMoisture(lastMoisture);
-      const tempC = 18 + rnd(0,14);
-      const risk = clamp(0.55*(lastMoisture/100) + 0.35*((tempC-10)/25) + 0.10*0.4, 0, 1);
+      const tempC = 18 + rnd(0, 14);
+      const risk = clamp(0.55 * (lastMoisture / 100) + 0.35 * ((tempC - 10) / 25) + 0.10 * 0.4, 0, 1);
       const fert = fertilizerAdvice();
       const action = irrigationLogic(lastRainProb, lastMoisture, $crop.value);
 
-      // charts
-      moistureData.shift(); moistureData.push(lastMoisture);
-      rainData.shift(); rainData.push(lastRainProb);
-      pestData.shift(); pestData.push(risk);
-      moistureChart.update('none'); rainChart.update('none'); pestChart.update('none');
-      npkChart.data.datasets[0].data=[nutrients.N,nutrients.P,nutrients.K]; npkChart.update('none');
+      // Update charts
+      moistureData.shift();
+      moistureData.push(lastMoisture);
+      rainData.shift();
+      rainData.push(lastRainProb);
+      pestData.shift();
+      pestData.push(risk);
+      moistureChart.update('none');
+      rainChart.update('none');
+      pestChart.update('none');
+      npkChart.data.datasets[0].data = [nutrients.N, nutrients.P, nutrients.K];
+      npkChart.update('none');
 
-      // KPIs
-      $kpiMoist.textContent = ${lastMoisture.toFixed(1)} %;
-      const mth = moistureThresholds[$crop.value]||35;
+      // Update KPIs
+      $kpiMoist.textContent = `${lastMoisture.toFixed(1)} %`;
+      const mth = moistureThresholds[$crop.value] || 35;
       setStatus($kpiMoistStatus, lastMoisture < mth ? 'Baixa — considerar rega' : 'Adequada', lastMoisture < mth ? 'warn' : 'ok');
-      $kpiRain.textContent = ${lastRainProb.toFixed(0)} %;
-      setStatus($kpiRainStatus, lastRainProb>=60 ? 'Chuva provável' : (lastRainProb>=30?'Possível':'Pouco provável'), lastRainProb>=60?'ok':(lastRainProb>=30?'warn':'alert'));
-      const pestTxt = risk<0.33?'Baixo':(risk<0.66?'Médio':'Alto');
-      $kpiPest.textContent = pestTxt; setStatus($kpiPestStatus, Índice: ${risk.toFixed(2)}, risk<0.33?'ok':(risk<0.66?'warn':'alert'));
+      $kpiRain.textContent = `${lastRainProb.toFixed(0)} %`;
+      setStatus($kpiRainStatus, lastRainProb >= 60 ? 'Chuva provável' : (lastRainProb >= 30 ? 'Possível' : 'Pouco provável'), lastRainProb >= 60 ? 'ok' : (lastRainProb >= 30 ? 'warn' : 'alert'));
+      const pestTxt = risk < 0.33 ? 'Baixo' : (risk < 0.66 ? 'Médio' : 'Alto');
+      $kpiPest.textContent = pestTxt;
+      setStatus($kpiPestStatus, `Índice: ${risk.toFixed(2)}`, risk < 0.33 ? 'ok' : (risk < 0.66 ? 'warn' : 'alert'));
       const npkMin = Math.min(nutrients.N, nutrients.P, nutrients.K);
-      $kpiNpk.textContent = N:${nutrients.N.toFixed(0)} P:${nutrients.P.toFixed(0)} K:${nutrients.K.toFixed(0)};
-      setStatus($kpiNpkStatus, npkMin<42?'Deficiência provável':'Equilíbrio aceitável', npkMin<42?'warn':'ok');
+      $kpiNpk.textContent = `N:${nutrients.N.toFixed(0)} P:${nutrients.P.toFixed(0)} K:${nutrients.K.toFixed(0)}`;
+      setStatus($kpiNpkStatus, npkMin < 42 ? 'Deficiência provável' : 'Equilíbrio aceitável', npkMin < 42 ? 'warn' : 'ok');
 
-      const plantAdvice = (function(){ const crop=$crop.value, loc=$loc.value, m=new Date().getMonth()+1; const win=(plantingWindowsByLoc[loc]&&plantingWindowsByLoc[loc][crop])||[]; const inWindow=win.includes(m); const meses=win.map(monthName).join(', ')||'—'; return {inWindow, meses}; })();
-      const irrigTxt = action==='chuva' ? 'Chuvas previstas; rega adiada.' : action==='regar' ? 'Rega activada até atingir o limiar.' : 'Rega em espera.';
+      // Update summary
+      const plantAdvice = currentPlantingAdvice();
+      const irrigTxt = action === 'chuva' ? 'Chuvas previstas; rega adiada.' : action === 'regar' ? 'Rega activada até atingir o limiar.' : 'Rega em espera.';
       const fertTxt = fert.needs ? fert.msg : 'Plano nutricional adequado.';
-      $summary.innerHTML = <strong>Local:</strong> ${$loc.options[$loc.selectedIndex].text} • <strong>Cultura:</strong> ${$crop.value.toUpperCase()}<br/>+
-        <strong>Situação:</strong> Humidade ${lastMoisture.toFixed(1)}%, Chuva ${lastRainProb.toFixed(0)}%, Pragas ${pestTxt}.<br/>+
-        <strong>Irrigação:</strong> ${irrigTxt}<br/>+
-        <strong>Fertilização:</strong> ${fertTxt}<br/>+
-        <strong>Sementeira:</strong> Janela p/ província: ${plantAdvice.meses};
+      $summary.innerHTML = `
+        <strong>Local:</strong> ${$loc.options[$loc.selectedIndex].text} • <strong>Cultura:</strong> ${$crop.value.toUpperCase()}<br/>
+        <strong>Situação:</strong> Humidade ${lastMoisture.toFixed(1)}%, Chuva ${lastRainProb.toFixed(0)}%, Pragas ${pestTxt}.<br/>
+        <strong>Irrigação:</strong> ${irrigTxt}<br/>
+        <strong>Fertilização:</strong> ${fertTxt}<br/>
+        <strong>Sementeira:</strong> Janela p/ província: ${plantAdvice.janela}
+      `;
 
-      // Alertas
-      if(action==='regar' && lastMoisture < mth-3) addAlert('Solo muito seco — manter rega.', 'alert');
-      if(lastRainProb>=70) addAlert('Chuva forte provável nas próximas horas.', 'ok');
-      if(risk>=0.66) addAlert('Risco alto de pragas/doenças — considerar inspecção e controlo biológico.', 'alert');
-      if(npkMin<35) addAlert('Deficiência nutricional acentuada — ajustar adubação NPK.', 'alert');
+      // Alerts
+      if (action === 'regar' && lastMoisture < mth - 3) addAlert('Solo muito seco — manter rega.', 'alert');
+      if (lastRainProb >= 70) addAlert('Chuva forte provável nas próximas horas.', 'ok');
+      if (risk >= 0.66) addAlert('Risco alto de pragas/doenças — considerar inspecção e controlo biológico.', 'alert');
+      if (npkMin < 35) addAlert('Deficiência nutricional acentuada — ajustar adubação NPK.', 'alert');
     }
 
-    function restartTimer(){ if(timer) clearInterval(timer); timer = setInterval(tick, parseInt($updateRate.value,10)); }
-    function restartApiTimer(){ if(apiTimer) clearInterval(apiTimer); apiTimer = setInterval(fetchFromOpenMeteo, 60*1000); }
+    function restartTimer() {
+      if (timer) clearInterval(timer);
+      timer = setInterval(tick, parseInt($updateRate.value, 10));
+    }
+
+    function restartApiTimer() {
+      if (apiTimer) clearInterval(apiTimer);
+      apiTimer = setInterval(fetchFromOpenMeteo, 60 * 1000);
+    }
 
     // Eventos
-    $loc.addEventListener('change', ()=>{ addAlert('Localidade alterada — a obter dados da API.','warn'); fetchFromOpenMeteo(); });
-    $crop.addEventListener('change', ()=>{ addAlert('Cultura alterada — recalibrando limiares e sementeira.','warn'); });
-    $rainToggle.addEventListener('change', ()=>{ addAlert('Modo de chuva alterado.','warn'); });
-    $dataSource.addEventListener('change', ()=>{ addAlert('Fonte de humidade alterada.','warn'); });
-    $updateRate.addEventListener('change', ()=> restartTimer());
+    $loc.addEventListener('change', () => {
+      addAlert('Localidade alterada — a obter dados da API.', 'warn');
+      fetchFromOpenMeteo();
+    });
+    $crop.addEventListener('change', () => {
+      addAlert('Cultura alterada — recalibrando limiares e sementeira.', 'warn');
+    });
+    $rainToggle.addEventListener('change', () => {
+      addAlert('Modo de chuva alterado.', 'warn');
+    });
+    $dataSource.addEventListener('change', () => {
+      addAlert('Fonte de humidade alterada.', 'warn');
+    });
+    $updateRate.addEventListener('change', () => {
+      restartTimer();
+      addAlert(`Taxa de atualização alterada para ${$updateRate.value/1000}s.`, 'warn');
+    });
 
     // Arranque
-    restartTimer(); restartApiTimer(); fetchFromOpenMeteo();
-    setBadge('Bombas: —','warn');
+    restartTimer();
+    restartApiTimer();
+    fetchFromOpenMeteo();
+    setBadge('Bombas: —', 'warn');
   </script>
 </body>
 </html>
